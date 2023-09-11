@@ -1,10 +1,10 @@
 TUGAS 1
-<pre>hello</pre>
+
 Implementasi Checklist:
 
 1) Buat directory baru bernama pacil_inventory dengan visibilitas public.
 2) Inisiasi repository baru di github bernama pacil_inventory (repository yang digunakan untuk menulis file ini).
-3) Hubungkan directory dari langkah 1 (direktori utama) dengan repository github dari 2.
+3) Hubungkan directory dari langkah 1 (direktori utama) dengan repository github dari langkah 2.
 4) Dalam terminal, masuk ke dalam directory utama, lalu buat virtual environment baru, serta aktifkan.
 5) Pada direktori utama, buat file requirements.txt dan isi dengan dependencies-dependencies yang perlu di-install:
 
@@ -64,7 +64,9 @@ python manage.py migrate
 ```html
 from django.shortcuts import render
 ```
-    Lalu di bawah import tambahkan:
+
+Lalu di bawah import tambahkan:
+
 ```html
 def show_main(request):
     context = {

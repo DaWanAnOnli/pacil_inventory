@@ -1,6 +1,7 @@
-TUGAS 1
+ <h1>TUGAS 1</h1>
+ 
 
-Implementasi Checklist:
+<h2>Implementasi Checklist</h2>
 
 1) Buat directory baru bernama pacil_inventory dengan visibilitas public.
 2) Inisiasi repository baru di github bernama pacil_inventory (repository yang digunakan untuk menulis file ini).
@@ -115,6 +116,37 @@ urlpatterns = [
     ...
 ]
 ```
+23) add, commit dan push directory utama ke Github.
+
+24) Buat dan deploy app baru di Adaptable bernama pacil-inventory dengan settings sama seperti saat membuat app shopping list.
+    Gunakan repository pacil_inventory untuk membuat app.
+
+25) Buat file README ini, lalu lakukan lagi add, commit, dan push.
 
 
-    
+<h2>Bagan Request Client</h2>
+![Django MVT Model](https://github.com/DaWanAnOnli/pacil_inventory/assets/124868777/767ae810-b5ae-4cc8-b5ec-48e58011bc40)
+
+
+<h2>Kegunaan Virtual Environment</h2>
+Virtual Environment berguna untuk menjaga agar aplikasi tetap dapat digunakan meskipun dalam komputer kita terinstall package/dependencies dengan versi berbeda.
+Hal ini bermanfaat untuk dua kasus:
+
+1) Jika salah satu atau beberapa _dependencies_ mengalami update yang cukup signifikan untuk memengaruhi proyek yang sekarang sedang dikerjakan,
+   Virtual Environment akan menjaga agar proyek tersebut tidak dipengaruhi oleh update
+2) Kita dapat mengerjakan proyek kita di komputer lain yang memiliki dependencies dengan versi yang berbeda (Contoh: python versi lama), tanpa harus menginstall
+   versi yang sama dengan ada ada pada komputer kita biasanya.
+
+<h2>MVC, MVT, MVVM</h2>
+
+1) MVC adalah salah satu paradigma pemrograman web, yang merupakan singkatan dari Model, View, Controller. Model adalah bagian yang berisi definisi data yang akan disimpan di database. Controller adalah bagian yang berisi logika utama program, yang mungkin membutuhkan informasi yang terdapat dalam database (dengan perantara Models). View merupakan struktur dasar dari webpage yang isinya akan ditentukan dari hasil pemrosesan oleh Views. Contoh Framework: ASP.NET & Spring
+
+2) MVT adalah salah satu paradigma pemrograman web, yang merupakan singkatan dari Model, View, Template. Pada dasarnya, MVT mirip dengan MVC, hanya saja View pada MVT berbeda dari View pada MVC. View pada MVT mengerjakan hal yang sama dengan Controller pada MVC, sementara Template pada MVT mengerjakan hal yang sama dengan View pada MVC. Models pada kedua paradigma ini mengerjakan hal yang serupa. Contoh Framework: Django.
+
+Perbedaan utama MVC dengan MVT adalah: pada MVC, kita harus mengimplementasikan proses secara spesifik (misal, proses controller mengambil data dari models, atau models mengambil data dari database), sementara pada MVT, implementasi proses sudah dilakukan secara otomatis oleh framework.
+
+3) MVVM adalah salah satu paradigma pemrograman web, yang merupakan singkatan dari Model, View, View-Model. Pada dasarnya, MVVM mirip dengan MVC. Model dan View dari kedua paradigma mengerjakan hal yang sama, sementara View-Model pada MVVM mengerjakan hal yang sama dengan Controller pada MVC. Contoh Framework: Prism, MVVM Light.
+
+Ada 2 perbedaan dasar MVVM dengan MVC. 1. Pada MVVM request user akan ditangkap oleh View, sementara pada MVC request user akan ditangkap oleh Controller. 2. Pada MVVM View memiliki reference terhadap View-Model, sementara pada MVC View tidak memiliki reference (bersifat pasif) terhadap Controller.
+
+

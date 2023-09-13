@@ -147,6 +147,6 @@ Perbedaan utama MVC dengan MVT adalah: pada MVC, kita harus mengimplementasikan 
 
 3) MVVM adalah salah satu paradigma pemrograman web, yang merupakan singkatan dari Model, View, View-Model. Pada dasarnya, MVVM mirip dengan MVC. Model dan View dari kedua paradigma mengerjakan hal yang sama, sementara View-Model pada MVVM mengerjakan hal yang sama dengan Controller pada MVC. Contoh Framework: Prism, MVVM Light.
 
-Ada 2 perbedaan dasar MVVM dengan MVC. 1. Pada MVVM request user akan ditangkap oleh View, sementara pada MVC request user akan ditangkap oleh Controller. 2. Pada MVVM View memiliki reference terhadap View-Model, sementara pada MVC View tidak memiliki reference (bersifat pasif) terhadap Controller.
+Ada 2 perbedaan dasar MVVM dengan MVC. 1. Pada MVVM request user akan ditangkap oleh View, sementara pada MVC request user akan ditangkap oleh Controller. 2. Pada MVVM View memiliki reference terhadap View-Model, sementara pada MVC View tidak memiliki reference (bersifat pasif) terhadap Controller. Karena MVT mirip dengan MVC, maka perbedaan antara MVT dengan MVVM mirip dengan perbedaan MVC dengan MVVM. Hanya saja pada MVT request user ditangkap oleh Controller, dan Template bersifat pasif terhadap View.
 
 

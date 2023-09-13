@@ -8,11 +8,15 @@ from django.core import serializers
 
 def show_main(request):
     items = Item.objects.all()
+    total_amount = 0
+    for item in items:
+        total_amount += item.amount
     context = {
         'app_name': 'pacil-inventory',
         'student_name': 'William Joel Matthew Quinn Rompis',
         'class': 'PBP A',
-        'items': items
+        'items': items,
+        'total_amount': total_amount
     }
 
     return render(request, "main.html", context)
@@ -25,7 +29,7 @@ def create_item(request):
         return HttpResponseRedirect(reverse('main:show_main'))
 
     context = {'form': form}
-    return render(request, "create_product.html", context)
+    return render(request, "create_item.html", context)
 
 def show_xml(request):
     data = Item.objects.all()

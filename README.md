@@ -150,3 +150,191 @@ Perbedaan utama MVC dengan MVT adalah: pada MVC, kita harus mengimplementasikan 
 Ada 2 perbedaan dasar MVVM dengan MVC. 1. Pada MVVM request user akan ditangkap oleh View, sementara pada MVC request user akan ditangkap oleh Controller. 2. Pada MVVM View memiliki reference terhadap View-Model, sementara pada MVC View tidak memiliki reference (bersifat pasif) terhadap Controller. Karena MVT mirip dengan MVC, maka perbedaan antara MVT dengan MVVM mirip dengan perbedaan MVC dengan MVVM. Hanya saja pada MVT request user ditangkap oleh Controller, dan Template bersifat pasif terhadap View.
 
 
+
+ <h1>TUGAS 2</h1>
+ 
+
+<h2>Implementasi Checklist</h2>
+
+1) Di terminal, masuk ke direktori utama pacil_inventory, lalu aktifkan virtual environment dengan command ```env\Scripts\activate.bat```
+
+2) Buka file urls.py di folder pacil_inventory, dan ubah 'math/' menjadi di variable urls pattern:
+
+```
+urlpatterns = [
+    path('', include(main.urls')),   # perubahan ada di baris ini
+    path('admin/', admin.site.urls),
+]    
+```
+
+3) Di direktori utama, buat foler ```templates``` dan di dalamnya buat file HTML bernama ```base.html``` yang isinya berikut:
+
+```
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        {% block meta %}
+        {% endblock meta %}
+    </head>
+
+    <body>
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>
+```
+
+4) Buka file ```settings.py``` pada directory proyek ```pacil_inventory``` dan tambahkan code pada variable ```TEMPLATES```:
+
+```
+...
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'], # perubahan terjadi di baris sini
+        'APP_DIRS': True,
+        ...
+    }
+]
+...
+```
+
+5) Buka file ```main.html``` pada folder ```templates``` di directory ```main```, dan ubah isinya menjadi berikut:
+
+```
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Pacil Inventory Page</h1>
+
+    <h5>App name: </h5>
+    <p>{{ app_name }}</p>
+
+    <h5>Student name: </h5>
+    <p>{{ student_name }}</p>
+
+    <h5>Class: </h5>
+    <p>{{ class }}</p>
+
+{% endblock content %}
+```
+
+6) Di directory ```main```, buat file bernama ```forms.py``` yang berisi:
+
+```
+from django.forms import ModelForm
+from main.models import Item
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Item
+        fields = ["name", "amount", "description"]
+'''
+
+7) Buka file views.py pada folder main dan tambahkan import-import berikut:
+```
+from django.http import HttpResponseRedirect
+from main.forms import ProductForm
+from django.urls import reverse
+from main.models import Item
+```
+
+8) Di file yang sama, buat fungsi ```create_product``` seperti berikut:
+```
+def create_item(request):
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "create_item.html", context)
+```
+
+9) Masih di file views.py, ubah fungsi ```show_main``` menjadi berikut:
+```
+def show_main(request):
+    items = Item.objects.all()
+    context = {
+        'app_name': 'pacil-inventory',
+        'student_name': 'William Joel Matthew Quinn Rompis',
+        'class': 'PBP A',
+        'items': items
+    }
+
+    return render(request, "main.html", context)
+```
+
+10) Buka file ```urls.py di folder ```main``` dan tambahkan import berikut:
+```
+from main.views import show_main, create_product
+```
+
+11) Di file yang sama, tambahkan kode berikut pada variable ```urlpatterns```:
+```
+path('create-item', create_item, name='create_item'),
+```
+
+12) Masuk directory ```main/templates```, buat file HTML baru bernama ```create_item.html``` yang berisi:
+```
+{% extends 'base.html' %} 
+
+{% block content %}
+<h1>Add New Item</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Add Item"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
+```
+
+13) Dalam folder yang sama, buka main.html dan tambahkan kode di dalam ```{% block content %}``` seperti berikut:
+```
+...
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Description</th>
+    </tr>
+
+    {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+
+    {% for item in items %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.description}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br />
+
+<a href="{% url 'main:create_item' %}">
+    <button>
+        Add New Item
+    </button>
+</a>
+
+{% endblock content %}
+
+14) 
+

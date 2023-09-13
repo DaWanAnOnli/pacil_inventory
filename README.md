@@ -335,6 +335,7 @@ path('create-item', create_item, name='create_item'),
 </a>
 
 {% endblock content %}
+```
 
 14) Buka ```views.py``` di folder main dan tambahkan import-import berikut:
 ```

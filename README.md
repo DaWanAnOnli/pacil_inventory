@@ -235,7 +235,7 @@ class ProductForm(ModelForm):
     class Meta:
         model = Item
         fields = ["name", "amount", "description"]
-'''
+```
 
 7) Buka file views.py pada folder main dan tambahkan import-import berikut:
 ```
@@ -336,5 +336,42 @@ path('create-item', create_item, name='create_item'),
 
 {% endblock content %}
 
-14) 
+14) Buka ```views.py``` di folder main dan tambahkan import-import berikut:
+```
+from django.http import HttpResponse
+from django.core import serializers
+```
 
+15) Di file yang sama, buat fungsi-fungsi berikut:
+```
+def show_xml(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    
+def show_json(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    
+def show_xml_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    
+def show_json_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+
+16) Buka file ```urls.py``` di folder ```shopping_list``` dan import fungsi-fungsi barusan:
+```
+from main.views import show_main, create_product, show_xml, show_json, show_xml_by_id, show_json_by_id 
+```
+
+17) Di file yang sama, tambahkan code berikut dalam variable ```urlpatterns```:
+```
+...
+path('xml/', show_xml, name='show_xml'), 
+path('json/', show_json, name='show_json'), 
+path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
+...
+```

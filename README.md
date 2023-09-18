@@ -154,6 +154,30 @@ Ada 2 perbedaan dasar MVVM dengan MVC. 1. Pada MVVM request user akan ditangkap 
  <h1>TUGAS 2</h1>
  
 
+
+<h2>Perbedaan get dengan post</h2>
+
+Pada dasarnya, ```post``` digunakan saat kita ingin mengirimkan sesuatu ke server, sementara ```get``` digunakan saat kita ingin server mengirimkan sesuatu kepada kita. Pada form ```get```, data yang kita input akan diubah ke dalam bentuk string dan dimasukkan ke dalam URL. Pada form ```post```, data input akan di-encode terlebih dahulu lalu dikirimkan ke server.
+
+Penggunaan ```get``` sebaiknya dibatasi pada kasus-kasus di mana data yang di-input tidak sensitif dan tidak berjumlah banyak. Jika data yang di-input merupakan data sensitif seperti password, gunakan ```form``` supaya password tersebut tidak muncul di URL. Jika data yang di-input berjumlah banyak, gunakan ```form``` juga, supaya URL yang terbentuk lebih ringkas. 
+
+<h2>Perbedaan antara XML, JSON, dan HTML</h2>
+Analisis perbedaan dapat ditinjau menggunakan dua lapis.
+
+1) ```HTML``` berbeda dengan ```XML``` dan ```JSON``` karena ```HTML``` berurusan dengan bagaimana data akan ditampilkan, sementara ```XML``` dan ```JSON``` berurusan dengan bagaimana data disimpan dan dikirim.
+
+2) ```XML``` dan ```JSON``` mirip dalam hal penggunaan, namun berbeda dalam fitur-fiturnya. ```JSON``` terkenal karena syntax-nya yang lebih mudah dibaca, men-support struktur data array, serta menggunakan memory yang lebih sedikit. ```XML``` banyak digunakan karena lebih mudah dibaca oleh mesin, dan mensupport tipe data yang kompleks. Dalam penggunaannya, semakin kompleks dan banyak data yang ingin disimpan, ```XML``` semakin direkomedasikan dibandingkan ```JSON```. Perbedaan-perbedaan berikutnya antara lain: 
+a) ```XML``` menggunakan start dan end tags untuk identifikasi item, sementara ```JSON``` tidak menggunakan tag.
+b) ```XML``` adalah ekstensi dari SGML, sementara ```JSON``` adalah ekstensi dari javascript
+c) ```JSON``` berorientasi data, sementara ```XML``` berorientasi dokumen.
+
+<h2>Alasan JSON sekarang lebih sering digunakan</h2>
+
+1) ```JSON``` lebih cepat dan hemat space daripada ```XML```, sehingga lebih praktis digunakan.
+2) Syntax ```JSON``` lebih mudah dibaca (lebih sederhana) oleh manusia daripada ```XML``` sehingga lebih mudah dipelajari.
+
+
+
 <h2>Implementasi Checklist</h2>
 
 1) Di terminal, masuk ke direktori utama pacil_inventory, lalu aktifkan virtual environment dengan command ```env\Scripts\activate.bat```

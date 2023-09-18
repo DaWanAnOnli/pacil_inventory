@@ -177,7 +177,6 @@ c) ```JSON``` berorientasi data, sementara ```XML``` berorientasi dokumen.
 2) Syntax ```JSON``` lebih mudah dibaca (lebih sederhana) oleh manusia daripada ```XML``` sehingga lebih mudah dipelajari.
 
 
-
 <h2>Implementasi Checklist</h2>
 
 1) Di terminal, masuk ke direktori utama pacil_inventory, lalu aktifkan virtual environment dengan command ```env\Scripts\activate.bat```
@@ -400,3 +399,22 @@ path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
 path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
 ...
 ```
+
+
+
+<h2>Screenshot Postman</h2>
+
+HTML:
+![html](https://github.com/DaWanAnOnli/pacil_inventory/assets/124868777/8eeaee43-a0b3-498d-9584-a9a70c28353c)
+
+XML:
+![xml](https://github.com/DaWanAnOnli/pacil_inventory/assets/124868777/c9cbe7c5-d7ed-403c-b011-6e2626eca306)
+
+JSON:
+![json](https://github.com/DaWanAnOnli/pacil_inventory/assets/124868777/9af6cfb5-628d-4b27-8da6-682546d0f8c7)
+
+XML (id = 2):
+![xml_id2](https://github.com/DaWanAnOnli/pacil_inventory/assets/124868777/5a3dbfec-6e7d-42b2-a616-7662c534f0ad)
+
+JSON (id = 2):
+![json](https://github.com/DaWanAnOnli/pacil_inventory/assets/124868777/01a4c2c7-37fe-4e65-ad92-e3f391ca1e92)

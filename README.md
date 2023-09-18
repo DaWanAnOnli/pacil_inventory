@@ -1,4 +1,4 @@
- <h1>TUGAS 1</h1>
+ <h1>TUGAS 2</h1>
  
 
 <h2>Implementasi Checklist</h2>
@@ -151,7 +151,7 @@ Ada 2 perbedaan dasar MVVM dengan MVC. 1. Pada MVVM request user akan ditangkap 
 
 
 
- <h1>TUGAS 2</h1>
+ <h1>TUGAS 3</h1>
  
 
 

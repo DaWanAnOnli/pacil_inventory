@@ -16,6 +16,7 @@ def show_main(request):
         'student_name': 'William Joel Matthew Quinn Rompis',
         'class': 'PBP A',
         'items': items,
+        'len_items' : len(items),
         'total_amount': total_amount
     }
 

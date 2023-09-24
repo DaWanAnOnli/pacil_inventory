@@ -689,3 +689,19 @@ def show_main(request):
 17. Masukkan command ```python manage.py migrate```
 
 
+<h2>Django UserCreationForm</h2>
+
+UserCreationForm adalah module built-in dari Django yang berfungsi membuat user baru yang memiliki passwordnya sendiri. Form ini menyediakan tiga field. Satu untuk username, 1 password, 1 untuk mengetik ulang password. Keuntungan dari module ini adalah module ini memastikan kedua password yang dimasukkan sama. Modul ini juga akan menolak registrasi user yang usernamnya sudah ada di dalam sistem, secara case-insensitive. Kelemahan modul ini yakni tidak adanya support untuk two-step verification melalui email atau pun SMS. Untuk mengatasinya, kita harus memodifikasi classnya secara langsung, atau membuat implementasi user creations sendiri dari nol.
+
+
+<h2>Authentication & Authorization di Django</h2>
+
+Secara singkat, authentication merujuk pada proses untuk memastikan bahwa aktivitas yang dilakukan atas nama pengguna tertentu benar-benar dilakukan oleh pengguna tersebut dan bukan oleh orang lain. Authorization merujuk pada apa saja yang dapat dilakukan oleh user tertentu dalam sistem. Kedua hal ini sangat berkaitan dan penting. Jika tidak ada authorization, siapa pun bisa melakukan apa saja dalam sistem. Tentu ini tidak diinginkan, karena mungkin ada data-data sensitif yang tidak baik jika diakses semua orang. Dalam hal ini, authentication berperan untuk memastikan seseorang hanya memperoleh hak-hak yang dipercayakan kepadanya saja, dan bukan hak-hak orang lain yang mungkin berbeda dengannya. Selain itu authentication juga memastikan kerahasiaan data pribadi, karena mungkin dalam akun tersebut terdapat informasi personal yang tidak ingin diakses oleh orang lain.
+
+<h2>Cookies</h2>
+
+Cookies adalah data yang dibuat oleh server dan dikirm ke browser pengguna sebagai ID bagi pengguna. Cookies akan disimpan pada periode waktu tertentu dan digunakan agar server dapat mengetahui siapa yang sedang mengaksesnya tanpa melalukan authentication terus-menerus. Contoh, saat kita login ke website tertentu, kita tidak perlu lagi memasukkan username dan password setiap kali kita berpindah-pindah halaman pada website tersebut, karena browser sudah menyimpan cookies untuk website tersebut.
+
+Django menerapkan cookies dengan cara menyimpan session-id pada browser, dan bukan menyimpan data itu sendiri. Hal ini baik untuk security, karena data sensitif tidak akan disimpan di dalam browser kita yang mungkin rentan terhadap serangan. Sementara itu, data user sebenarnya akan disimpan di server.
+
+<h2>Keamanan dalam menggunakan Cookies</h2>

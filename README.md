@@ -418,3 +418,274 @@ XML (id = 2):
 
 JSON (id = 2):
 ![json](https://github.com/DaWanAnOnli/pacil_inventory/assets/124868777/01a4c2c7-37fe-4e65-ad92-e3f391ca1e92)
+
+
+
+<h1>TUGAS 4</h1>
+
+<h2>Implementasi Checklist</h2>
+
+1. Pastikan semua step dilakukan dengan menjalankan virtual environment di dalam root directory pacil_inventory.
+2. Kita akan membuat halaman untuk register account. Buka views.py dan  import berikut pada bagian atas seperti berikut:
+```
+from django.shortcuts import redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+```
+Berikutnya tambahkan fungsi berikut bagian bawah file:
+```
+def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+```
+
+3. Masuk ke directory main/templates dan buat file baru bernama ```register.html``` berisi berikut:
+```
+{% extends 'base.html' %}
+
+{% block meta %}
+   <title>Register</title>
+{% endblock meta %}
+
+{% block content %}  
+
+<div class = "login">
+   
+   <h1>Register</h1>  
+
+       <form method="POST" >  
+           {% csrf_token %}  
+           <table>  
+               {{ form.as_table }}  
+               <tr>  
+                   <td></td>
+                   <td><input type="submit" name="submit" value="Daftar"/></td>  
+               </tr>  
+           </table>  
+       </form>
+
+   {% if messages %}  
+       <ul>   
+           {% for message in messages %}  
+               <li>{{ message }}</li>  
+               {% endfor %}  
+       </ul>   
+   {% endif %}
+
+</div>  
+
+{% endblock content %}
+```
+
+4. Di folder yang sama, buka urls.py dan tambahkan import berikut:
+```
+from main.views import register
+```
+Masih di file yang sama, pada variable ```urlpatterns``` tambahkan code berikut:
+```
+...
+path('register/', register, name='register'), #sesuaikan dengan nama fungsi yang dibuat
+...
+```
+5. Sekarang, kita akan membuat halam untuk login. Buka lagi views.py dan tambah import berikut:
+```
+from django.contrib.auth import authenticate, login
+```
+Lalu tambahkan function berikut:
+```
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('main:show_main')
+        else:
+            messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+    context = {}
+    return render(request, 'login.html', context)
+```
+
+6. Di directory main/templates, buat file baru bernama ```login.html``` dan isi dengan code berikut:
+```
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Login</title>
+{% endblock meta %}
+
+{% block content %}
+
+<div class = "login">
+
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Username: </td>
+                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+            </tr>
+                    
+            <tr>
+                <td>Password: </td>
+                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input class="btn login_btn" type="submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}     
+        
+    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+
+</div>
+
+{% endblock content %}
+```
+
+7. pada directory main, buka urls.py dan tambahkan import berikut:
+```
+from main.views import login_user
+```
+Serta tambahkan path berikut di dalam variable ```urlpatterns```:
+```
+path('login/', login_user, name='login'),
+```
+
+8. Sekarang, kita akan membuat halaman untuk logout. Buka lagi file views.py pada directory main dan tambahkan import berikut:
+```
+from django.contrib.auth import logout
+```
+Masih di file yang sama, tambahkan function berikut:
+```
+def logout_user(request):
+    logout(request)
+    return redirect('main:login')
+```
+
+9. Buka file ```main.html``` pada directory main/templates dan tambahkan code berikut di bawah tabel:
+```
+<a href="{% url 'main:logout' %}">
+    <button>
+        Logout
+    </button>
+</a>
+```
+
+10. Buka file urls.py pada folder main dan masukkan import berikut:
+```
+from main.views import logout_user
+```
+Masih di file yang sama, tambahkan path url berikut ke dalam variable urlpattern.
+```
+path('logout/', logout_user, name='logout'),
+```
+
+11. Sekarang kita merestriksi akses halaman main. Buka file ```views.py``` pada folder main dan tambahkan import berikut:
+```
+from django.contrib.auth.decorators import login_required
+```
+Lalu, di atas function show_main, tambahkan baris code berikut:
+```
+...
+@login_required(login_url='/login')
+def show_main(request):
+...
+```
+
+12. Sekarang kita akan menggunakan data dari cookies. Buka views.py pada folder main dan tambahkan import berikut:
+```
+import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+```
+Lalu, pada function ```login_user```, kita ganti code pada blok ```if user is None``` sebagai berikut:
+```
+if user is not None:
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:show_main")) 
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+```
+Masih di file yang sama, pada fungsi show_main, tambahkan code berikut pada variable context:
+```
+context: {
+ ...
+ 'last_login': request.COOKIES['last_login'],
+}
+```
+Lalu, ubah function logout_user seperti berikut:
+```
+def logout_user(request):
+    logout(request)
+    response = HttpResponseRedirect(reverse('main:login'))
+    response.delete_cookie('last_login')
+    return response
+```
+
+13. Buka file main.html lalu tambahkan code berikut di antara tabel dan tombol logout:
+```
+...
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+...
+```
+
+14. Pada bagian terakhir, kita akan menghubungkan model product dengan user. Pada directory main, buka file ```models.py``` dan tambahkan code berikut:
+```
+...
+from django.contrib.auth.models import User
+...
+```
+Masih di file yang sama, pada model Item, tambahkan code berikut:
+```
+class Item(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ...
+```
+
+15. Pada directory main, buka ```views.py``` dan ubah function ```create_item``` menjadi berikut:
+```
+def create_item(request):
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        item = form.save(commit=False)
+        item.user = request.user
+        item.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+```
+Ubah juga function ```show_main``` menjadi berikut:
+```
+def show_main(request):
+    items = Item.objects.filter(user=request.user)
+    context = {
+        'name': request.user.username,
+    ...
+...
+```
+
+16. Save semua file yang telah dilakukan modifikasi, lalu buka terminal di dalam root directory pacil_inventory. Masukkan command ```python manage.py makemigrations'''. Akan muncul prompt, respons dengan angka 1. Setelah itu, akan muncul prompt lagi, respons dengan angka 1 lagi.
+17. Masukkan command ```python manage.py migrate```
+
+

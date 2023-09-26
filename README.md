@@ -705,3 +705,5 @@ Cookies adalah data yang dibuat oleh server dan dikirm ke browser pengguna sebag
 Django menerapkan cookies dengan cara menyimpan session-id pada browser, dan bukan menyimpan data itu sendiri. Hal ini baik untuk security, karena data sensitif tidak akan disimpan di dalam browser kita yang mungkin rentan terhadap serangan. Sementara itu, data user sebenarnya akan disimpan di server.
 
 <h2>Keamanan dalam menggunakan Cookies</h2>
+
+Secara umum, cookies cukup aman untuk digunakan. Hal ini dikarenakan cookies biasa dikirim pada https dalam bentuk encrypted , artinya bukan dalam bentuk asli. Jadi jika seorang hacker berhasil mendapatkan cookies, dia tidak bisa melalukan apa-apa dengan data tersebut. Lagi pula, aplikasi https biasa menggunakan flag secure pada cookie, yang membuat cookie tidak dapat dikirim oleh browser saat merequest http biasa yang tidak aman. Yang perlu diwaspadai adalah apabila penyerang memiliki akses terhadap browser korban, karena data cookies disimpan di browser korban. Django mengatasi hal ini dengan hanya menyimpan session ID pada browser dan bukan datanya sendiri.

@@ -96,11 +96,6 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
     
-def delete_item(request, item_id):
-    item = Item.objects.get(pk=item_id)
-    item.delete()
-    response = HttpResponseRedirect(reverse('main:show_main'))
-    return response
     
 def subtract_amount(request, item_id):
     item = Item.objects.get(pk=item_id)
@@ -115,3 +110,26 @@ def add_amount(request, item_id):
     item.save()
     response = HttpResponseRedirect(reverse('main:show_main'))
     return response
+    
+def edit_item(request, id):
+    # Get item berdasarkan ID
+    item = Item.objects.get(pk = id)
+
+    # Set item sebagai instance dari form
+    form = ProductForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+
+def delete_item(request, id):
+    # Get data berdasarkan ID
+    item = Item.objects.get(pk = id)
+    # Hapus data
+    item.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))

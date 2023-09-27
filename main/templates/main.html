@@ -2,6 +2,17 @@
 
 {% block content %}
 
+
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <form class="d-flex" role="search">
+      <p>{{student_name}}</p>
+      <a href="{% url 'main:logout' %}" class="btn"> Logout </a>
+    </form>
+  </div>
+</nav>
+
+
 <h1>Pacil Inventory Page</h1>
 
 <h5>App name: </h5>
@@ -30,9 +41,26 @@
             <td>{{item.amount}}</td>
             <td>{{item.description}}</td>
 			<td>
-				<a href="{% url 'main:delete_item' item.id %}" class="btn">Delete Item</a>
-				<a href="{% url 'main:subtract_amount' item.id %}" class="btn">Subtract Amount</a>
-				<a href="{% url 'main:add_amount' item.id %}" class="btn">Add Amount</a>
+				<a href="{% url 'main:subtract_amount' item.id %}">
+					<button>
+						Subtract
+					</button>
+				</a>
+				<a href="{% url 'main:add_amount' item.id %}">
+					<button>
+						Add
+					</button>
+				</a>
+				<a href="{% url 'main:edit_item' item.pk %}">
+					<button>
+						Edit
+					</button>
+				</a>
+				<a href="{% url 'main:delete_item' item.pk %}">
+				  <button>
+					  Delete
+				  </button>
+				</a>
 			</td>
 			
         </tr>

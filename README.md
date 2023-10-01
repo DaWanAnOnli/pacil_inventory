@@ -707,3 +707,151 @@ Django menerapkan cookies dengan cara menyimpan session-id pada browser, dan buk
 <h2>Keamanan dalam menggunakan Cookies</h2>
 
 Secara umum, cookies cukup aman untuk digunakan. Hal ini dikarenakan cookies biasa dikirim pada https dalam bentuk encrypted , artinya bukan dalam bentuk asli. Jadi jika seorang hacker berhasil mendapatkan cookies, dia tidak bisa melalukan apa-apa dengan data tersebut. Lagi pula, aplikasi https biasa menggunakan flag secure pada cookie, yang membuat cookie tidak dapat dikirim oleh browser saat merequest http biasa yang tidak aman. Yang perlu diwaspadai adalah apabila penyerang memiliki akses terhadap browser korban, karena data cookies disimpan di browser korban. Django mengatasi hal ini dengan hanya menyimpan session ID pada browser dan bukan datanya sendiri.
+
+
+<h1> Tugas 5</h1>
+
+<h2>Implementasi Checklist</h2>
+1. Kita akan menambahkan Bootstrap ke dalam aplikasi. Buka directory pacil_inventory, masuk ke folder templates dan buka base.html. Ubah code pada ```<head>``` menjadi berikut:
+  ```
+  <head>
+  		{% block meta %}
+  			<meta charset="UTF-8" />
+  			<meta name="viewport" content="width=device-width, initial-scale=1">
+  		{% endblock meta %}
+  		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+  		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+  	</head>
+   ```
+
+2. Berikutnya, kita akan menambahkan fitur edit_item dan delete_item pada web kita. Buka file main/views.py dan tambahkan code berikut:
+   ```
+   def edit_item(request, id):
+    # Get item berdasarkan ID
+    item = Item.objects.get(pk = id)
+
+    # Set item sebagai instance dari form
+    form = ProductForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
+
+   def delete_item(request, id):
+    # Get data berdasarkan ID
+    item = Item.objects.get(pk = id)
+    # Hapus data
+    item.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
+   ```
+
+3. Pada file main/urls.py tambahkan import berikut:
+   ```
+   from main.views import ..., edit_item, delete_item
+   ```
+   Lalu pada tambahkan code berikut pada urlpatterns:
+   ```
+   ...
+   path('edit-item/<int:id>', edit_item, name='edit_item'),
+   path('delete_item/<item_id>', delete_item, name='delete_item'),
+   ...
+   ```
+
+4. Pada directory main/templates, buat file baru bernama edit_item.html dan isi dengan code berikut:
+  ```
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>Edit Item</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Edit Item"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
+```
+
+6. Sekarang kita akan mempercantik halaman utama kita sekaligus mengimplementasikan edit_item dan delete_item. Pada tahap ini semua modifikasi dilakukan main/templates/main.html (code tidak akan ditampilkan di sini karena terlalu panjang). Pertama, kita akan memasukkan semua konten kita ke dalam container yang diberi margin. Lalu, informasi tentang app name, student name, dll dimasukkan ke dalam containernya sendiri agar dapat di-align ke center. Setelah itu representasi setiap item diubah ke bentuk card, yang masing-masing memuat nama item, jumlah item deskripsi item, serta button untuk delete dan edit item. Setiap class button diubah menjadi ```"button btn-primary"``` dari Bootstrap. Kita juga akan menghapus informasi last login dan tombol log out untuk sementara.  
+
+7. Berikutnya kita akan menambahkan navbar pada halaman utama kita. Navbar ini berisi username yang sedang login, informasi last_login, dan tombol log out. Masih di file yang sama, tambahkan code berikut tepat di bawah ```{% block content %}```:
+```
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <form class="d-flex" role="search">
+		<div class="container d-flex justify-content-center align-items-center">
+			{{ name }}
+		</div>
+    </form>
+	
+	<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+	<div class="container d-flex justify-content-center align-items-center">
+		<div class="me-3"> Last login: {{ last_login }} </div>
+		<a href="{% url 'main:logout' %}" class="btn btn-primary" type="button">Logout</a>
+	</div>
+	</div>
+  </div>
+</nav>
+```
+
+7. Sekarang kita akan memodifikasi halaman ```login.html```. Kita meng-align semua konten ke tengah layar dan memberikan margin pada setiap komponen. Pertama ubah code ```<input class="btn login_btn" type="submit" value="Login">``` menjadi ```<input class="btn btn-primary m-3" type="submit" value="Login">```. Lalu masukkan semua komponen di antara ```{% block content %}``` dan ```{% endblock content %}``` ke dalam container seperti berikut:
+```
+{% block content %}
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+ ...
+</div>
+{% endblock content %}
+```
+Lalu, semua attribute ```class``` pada ```table``` ditambahkan ```m-2``` untuk margin, menjadi ```class=... m-2``` 
+
+8. Untuk file ```register.html```, kita melalukan hal yang sama pada ```{% block content %}```, yakni memasukkan container di dalamnya:
+```
+{% block content %}
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+ ...
+</div>
+{% endblock content %}
+```
+Setelah itu code ```<input type="submit" name="submit" value="Daftar"/>``` diganti menjadi ```<input class="btn btn-primary" type="submit" name="submit" value="Daftar"/>```.
+
+9. Untuk file create_item, lingkupi ```<h1>Add New Item</h1>``` seperti berikut:
+```
+<div class= "container m-5 text-center">
+	<h1>Add New Item</h1>
+</div>
+```
+Lalu, lingkupi ```<form...> ... </form> ``` seperti berikut:
+```
+<div class="container m-5 d-flex justify-content-center align-items-center"
+ <form method="POST">
+ ...
+ </form>
+</div>
+```
+
+<h2>Manfaat element selector</h2>
+
+<h2>Jenis-jenis HTML5</h2>
+
+<h2>Perbedaan margin dan padding</h2>
+
+<h2> Perbedaan Framework CSS Tailwind dan Bootstrap</h2>
+

@@ -856,10 +856,26 @@ Berikut kelima jenis element selector, serta manfaat dan kegunaannya:
 4. Pseudo-elements selectors: memilih bagian tertentu dari sebuah elemen. Contoh: baris dari text, atau bagian dari text yang sedang dihover cursor. Baik digunakan jika ingin menambah fungsionalitas dari elemn-elemen yang berukuran besar seperti paragraf, dll.
 5. Attribute selectors: memilih elemen HTML berdasarkan attribute atau value dari attribute. Baik digunakan untuk memilih elemen dengan sifat-sifat yang spesifik. 
 
+Sumber diambil dari https://www.w3schools.com/css/css_selectors.asp
 
 <h2>Jenis-jenis HTML5</h2>
 
+1. ```<a>``` digunakan untuk me-link ke halaman lain. Text dengan ```<a>``` dapat diklik.
+2. ```<body>``` digunakan sebagai penanda bagian body dari sebuah dokumen.
+3. ```<button>``` digunakan untuk mendefinisikan tombol yang bisa diklik.
+4. ```<div>``` digunakan untuk memisahkan elemen-elemen HTLM yang menggunakan CSS
+5. ```<form>``` menandakan tempat untuk mengisi input. Menetapkan alamat hasil input akan dikirim.
+6. ```<h1> ... <h6>``` heading
+7. ```<head>``` menandakan bagian head dari dokumen
+8. ```<html>``` penanda root file, ditaruh diawal file html
+9. ```<input>``` tempat user memasukkan input
+10. ```<p>``` penanda paragraf
+11. ```<table>``` menadakan adanya tabel
+12. ```<td>``` mendefinisikan row pada tabel
+13. ```<tr>``` mendefinisikan baris pada tabel
+
 <h2>Perbedaan margin dan padding</h2>
+Margin adalah jarak antara sebuah elemen dengan elemen lain. Padding adalah jarak antara batas elemen (border) dengan konten yang ada dalam elemen tersebut. 
 
 <h2> Perbedaan Framework CSS Tailwind dan Bootstrap</h2>
 

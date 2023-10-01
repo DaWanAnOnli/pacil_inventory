@@ -849,6 +849,13 @@ Lalu, lingkupi ```<form...> ... </form> ``` seperti berikut:
 ```
 
 <h2>Manfaat element selector</h2>
+Berikut kelima jenis element selector, serta manfaat dan kegunaannya:
+1. Simple selector: memilih elemen HTML berdasarkan tag, class, atau id. Baik digunakan untuk memodifikasi semua instance dari class tertentu, atau memodifikasi satu elemen secara detail. 
+2. Combinator selector: memilih elemen HTML berdasarkan relasinya di dalam tree. Contoh: menyeleksi semua ```<p>``` yang merupakan child dari ```<div>```. Baik digunakan untuk memodifikasi bagian-bagian tertentu dari web.
+3. Pseudo-class selectors: memilih special-state tertentu yang dimiliki oleh elemen HTML. Contoh: link yang sudah diklik, atau button yang dihover cursor. Baik digunakan bila terdapat banyak elemen yang memiliki special-state yang sama, sehingga hanya perlu satu kali definisi untuk menetapkan sifatnya.
+4. Pseudo-elements selectors: memilih bagian tertentu dari sebuah elemen. Contoh: baris dari text, atau bagian dari text yang sedang dihover cursor. Baik digunakan jika ingin menambah fungsionalitas dari elemn-elemen yang berukuran besar seperti paragraf, dll.
+5. Attribute selectors: memilih elemen HTML berdasarkan attribute atau value dari attribute. Baik digunakan untuk memilih elemen dengan sifat-sifat yang spesifik. 
+
 
 <h2>Jenis-jenis HTML5</h2>
 

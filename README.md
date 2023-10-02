@@ -878,4 +878,4 @@ Sumber diambil dari https://www.w3schools.com/css/css_selectors.asp
 Margin adalah jarak antara sebuah elemen dengan elemen lain. Padding adalah jarak antara batas elemen (border) dengan konten yang ada dalam elemen tersebut. 
 
 <h2> Perbedaan Framework CSS Tailwind dan Bootstrap</h2>
-
+Pada dasarnya, pada Bootstrap semua definisi dan fungsionalitasi komponen telah disediakan, tinggal dipakai saja. Kelebihan dari Bootstrap adalah easy-to-use, karena tinggal menggunakan template yang sudah ada. Kelemahannya adalah kurangnya fleksibilitas dalam mendesain fitur dan fungsionalitas komponen. Di sisi lain, Tailwind hanya memberikan struktur dasarnya saja, sehingga user-lah yang menentukan mayoritas dari cara kerja masing-masing elemen. Kelebihannya adalah fleksibilitas yang diberikan user untuk berkreasi sebebasnya. Kekurangannya adalah lebih sulit dipelajari karena user tetap harus membangun tampilannya sendiri. 

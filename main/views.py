@@ -124,7 +124,7 @@ def edit_item(request, id):
         return HttpResponseRedirect(reverse('main:show_main'))
 
     context = {'form': form}
-    return render(request, "edit_product.html", context)
+    return render(request, "edit_item.html", context)
 
 def delete_item(request, id):
     # Get data berdasarkan ID

@@ -6,40 +6,41 @@
 
 {% block content %}
 
-<div class = "login">
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class = "login">
 
-    <h1>Login</h1>
+        <h1>Login</h1>
 
-    <form method="POST" action="">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td class= "m-2">Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control m-2"></td>
+                </tr>
+                        
+                <tr>
+                    <td class= "m-2">Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control m-2"></td>
+                </tr>
 
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form>
+                <tr>
+                    <td></td>
+                    <td><input class="btn btn-primary m-3" type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}     
-        
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+            
+        Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
 
+    </div>
 </div>
-
 {% endblock content %}

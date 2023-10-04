@@ -858,6 +858,12 @@ Berikut kelima jenis element selector, serta manfaat dan kegunaannya:
 
 Sumber diambil dari https://www.w3schools.com/css/css_selectors.asp
 
+Simple selector dapat dibagi sebagai berikut:
+1. Inline styles: memilih semua elemen di dalam tag. Baik untuk memodifikasi keseluruhan dari satu bagain tertentu.
+2. ID Selectors: memilih elemen dengan ID tertentu. Baik digunakan jika halaman memiliki banyak elemen dengan karakteristik unik agar struktur html lebih rapi.
+3. Classes selector: memilih elemen berdasarkan classnya. Baik digunakan jika banyak elemen dengan sifat sama yang tersebar pada halaman web.
+4. Element selector: memilih elemen dengan tag elemen yang sama, misal ```<p> ... </p>'''. Baik digunakan saat terdapat beberapa bagian dari halaman yang memiliki sifat sama.
+
 <h2>Jenis-jenis HTML5</h2>
 
 1. ```<a>``` digunakan untuk me-link ke halaman lain. Text dengan ```<a>``` dapat diklik.

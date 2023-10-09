@@ -1034,8 +1034,8 @@ Asynchronous Programming di AJAX diimplementasikan dengan step-step sebagai beri
 5. Javascript memroses response dan mengeksekusi apa yang dibutuhkan pada browser.
 Dapat diperhatikan bahwa request yang dimaksud di sini bukanlah request untuk load ulang halaman, namun request yang memodifikasi/meng-update informasi yang ada pada halaman.
 
-<h2> Asynchronous Programming di AJAX </h2> 
-
+<h2> Fetch API vs jQuery</h2> 
+Berdasarkan informasi yang saya dapatkan, Fetch API adalah teknologi yang lebih baru, dan merupakan penyempurnaan dari jQuery. Fetch API memiliki syntax yang lebih mudah serta performance yang lebih baik. Banyak aplikasi yang dikembangkan hari ini menggunakan Fetch API, sehingga membuatnya menjadi opsi yang lebih relevan untuk hari ini.
 
 
 

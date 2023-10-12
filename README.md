@@ -885,3 +885,163 @@ Margin adalah jarak antara sebuah elemen dengan elemen lain. Padding adalah jara
 
 <h2> Perbedaan Framework CSS Tailwind dan Bootstrap</h2>
 Pada dasarnya, pada Bootstrap semua definisi dan fungsionalitasi komponen telah disediakan, tinggal dipakai saja. Kelebihan dari Bootstrap adalah easy-to-use, karena tinggal menggunakan template yang sudah ada. Kelemahannya adalah kurangnya fleksibilitas dalam mendesain fitur dan fungsionalitas komponen. Di sisi lain, Tailwind hanya memberikan struktur dasarnya saja, sehingga user-lah yang menentukan mayoritas dari cara kerja masing-masing elemen. Kelebihannya adalah fleksibilitas yang diberikan user untuk berkreasi sebebasnya. Kekurangannya adalah lebih sulit dipelajari karena user tetap harus membangun tampilannya sendiri. 
+
+
+<h1> Tugas 6</h1>
+
+<h2>Implementasi Checklist<h2>
+
+1. Tambah dua fungsi berikut pada ```views.py```.
+
+```
+def get_item_json(request):
+    items = Item.objects.all()
+    return HttpResponse(serializers.serialize('json', items))
+
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_item = Item(name=name, amount=amount, description=description, user=user)
+        new_item.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+```
+2. tambahkan path berikut pada ```urls.py```
+```
+path('get-item/', get_item_json, name='get_item_json'),
+path('create-item-ajax/', add_item_ajax, name='add_item_ajax'),
+```
+
+3. ada file ```main.html``` di folder ```main/templates```. Hapus bagian tabel dari tugas-tugas sebelumnya (pindahkan ke suatu file backup), lalu pada lokasi code yang baru dihapus tambahkan code berikut:
+```
+<table id="item_table"></table>
+```
+
+4. Tambahkan code berikut pada bagian bawah file tepat di atas ```{% endblock content %}```:
+```
+<script>
+    async function getProducts() {
+        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+    }
+    async function refreshProducts() {
+        document.getElementById("product_table").innerHTML = ""
+        const products = await getProducts()
+        let htmlString = `<tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Date Added</th>
+        </tr>`
+        products.forEach((item) => {
+            htmlString += `\n<tr>
+            <td>${item.fields.name}</td>
+            <td>${item.fields.price}</td>
+            <td>${item.fields.description}</td>
+            <td>${item.fields.date_added}</td>
+        </tr>` 
+        })
+        
+        document.getElementById("product_table").innerHTML = htmlString
+    }
+
+    refreshProducts()
+</script>
+```
+5. Tepat di bawah code ```<table id="item_table"></table>``` yang barusan ditambahkan, tambahakan code berikut untuk membuat modal:
+```
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Item</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="form" onsubmit="return false;">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                      <label for="name" class="col-form-label">Name:</label>
+                      <input type="text" class="form-control" id="name" name="name"></input>
+                  </div>
+                  <div class="mb-3">
+                      <label for="price" class="col-form-label">Amount:</label>
+                      <input type="number" class="form-control" id="amount" name="amount"></input>
+                  </div>
+                  <div class="mb-3">
+                      <label for="description" class="col-form-label">Description:</label>
+                      <textarea class="form-control" id="description" name="description"></textarea>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Item</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
+```
+
+6. Pada block ```<Script>``` yang baru dibuat, tambahkan code berikut:
+```
+<script>
+  ...
+  function addItem() {
+    fetch("{% url 'main:add_item_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#form'))
+    }).then(refreshItems)
+
+    document.getElementById("form").reset()
+    return false
+  }
+  document.getElementById("button_add").onclick = addItem
+</script>
+```
+
+<h2> Asynchronous Programming dan Synchronous Programming </h2>
+
+Synchronous Programming adalah jenis programming di mana instruksi atau step berikutnya baru akan dikerjakan setelah instruksi atau step sebelumnya selesai. Contohnya saat kita melakukan kalkulasi matematika, tentunya suatu instruksi tidak dapat dieksekuis bila inputnya tergantung pada output instruksi sebelumnya.
+Asynchronous Programming adalah jenis programming di mana instruksi lain dapat dijalankan selagi menunggu satu instruksi selesai. Contohnya jika suatu proses kalkulasi memakan waktu yang cukup lama, dilakukan juga kalkulasi-kalkulasi pendek di waktu yang sama sambil menunggu kalkulasi sebelumnya selesai.
+
+Dalam konteks web-programming, synchronous programming adalah saat suatu proses memerlukan update keseluruhan halaman (refresh). Setiap elemen halaman diupdate secara bersamaan (sinkron), tidak peduli apakah terjadi modifikasi terhadap elemen tersebut. Sementara itu asynchronous programming adalah saat suatu proses hanya mengupdate sebagian elemen dari halaman. Jadi ada elemen yang diupdate, dan ada yang tidak diupdate -- tidak memerlukan refresh halaman.
+
+<h2> Penerapan Event-Driven Programming </h2>
+
+Event-driven programming adalah paradigma pemrograman yang dibangun berdasarkan event. Program memiliki alur seperti berikut:
+1. Dibuat handler untuk masing-masing event.
+2. Program di-set untuk menunggu event yang ditetapkan.
+3. Program hanya akan menjalankan eksekusi (menjalankan handler) saat event yang ditunggu terjadi.
+
+Implementasi event-driven programming pada tugas ini adalalah saat kita ingin submit pembuatan item baru setelah mengisi form ada modal. Di sini diberikan event handler pada tombol Add Item, yakni pada saat tombol tersebut diklik: ```document.getElementById("button_add").onclick = addItem```. Artinya saat tombol Add Item diklik, maka function addItem akan dieksekusi.
+
+<h2> Asynchronous Programming di AJAX </h2>
+
+Asynchronous Programming di AJAX diimplementasikan dengan step-step sebagai berikut:
+1. Terjadi sebuah event yang men-trigger handler
+2. Javascript membuat object ```XMLHttpRequest```
+3. Object ini mengirim request ke server. Request ini berisi apa saja yang ingin dilakukan oleh handler
+4. Server memroses request tersebut dan mengirimkan hasilnya ke browser.
+5. Javascript memroses response dan mengeksekusi apa yang dibutuhkan pada browser.
+Dapat diperhatikan bahwa request yang dimaksud di sini bukanlah request untuk load ulang halaman, namun request yang memodifikasi/meng-update informasi yang ada pada halaman.
+
+<h2> Fetch API vs jQuery</h2> 
+Berdasarkan informasi yang saya dapatkan, Fetch API adalah teknologi yang lebih baru, dan merupakan penyempurnaan dari jQuery. Fetch API memiliki syntax yang lebih mudah serta performance yang lebih baik. Banyak aplikasi yang dikembangkan hari ini menggunakan Fetch API, sehingga membuatnya menjadi opsi yang lebih relevan untuk hari ini.
+
+
+
+
+
+
+
+
+

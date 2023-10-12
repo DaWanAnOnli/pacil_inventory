@@ -68,9 +68,7 @@
 <h5>Total Amount: {{total_amount}}</h5>
 <a href="{% url 'main:create_item' %}" class="btn btn-primary btn-sm m-3">Add New Item</a>
 
-
-
-<table id="item_cards"></table>
+<table id="item_table"></table>
 
 
 </div>
@@ -111,40 +109,27 @@
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
 
-
 <script>
   async function getItems() {
       return fetch("{% url 'main:get_item_json' %}").then((res) => res.json())
   }
   async function refreshItems() {
-    document.getElementById("item_cards").innerHTML = ""
+    document.getElementById("item_table").innerHTML = ""
     const items = await getItems()
-    let htmlString = `<div class="row row-cols-md-5">`
-      items.forEach((item) => {
-        htmlString += `\n
-		<div class="card" >
-			<div class="card-body">
-				<h5 class="card-title">${item.fields.name}</h5>
-				<h6 class="card-title" id="item_amount">${item.fields.amount}</h6>
-				<div class="container">
-					<span class="card-text d-inline-block text-truncate" style="max-width: 220px;">
-						${item.fields.description}
-					</span>
-        <div>
-          <button class="btn btn-primary btn-sm" onclick="decrementItemAjax(${item.pk})">-</button>
-          <button class="btn btn-primary btn-sm" onclick="incrementItemAjax(${item.pk})">+</button>
-          <button class="btn btn-primary btn-sm" onclick="deleteItemAjax(${item.pk})">Delete</button>
-          <button class="btn btn-primary btn-sm" onclick="editItemAjax(${item.pk})">Edit</button>
-          
-        </div>
-        </div>
-      </div>
-		</div>`
-  })
-  htmlString += `\n </div>`
-
-	
-    document.getElementById("item_cards").innerHTML = htmlString
+    let htmlString = `<tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Description</th>
+    </tr>`
+    items.forEach((item) => {
+        htmlString += `\n<tr>
+        <td>${item.fields.name}</td>
+        <td>${item.fields.amount}</td>
+        <td>${item.fields.description}</td>
+    </tr>` 
+    })
+    
+    document.getElementById("item_table").innerHTML = htmlString
   }
 
   refreshItems()
@@ -159,42 +144,7 @@
     return false
   }
 
-
   document.getElementById("button_add").onclick = addItem
-
-
-  function decrementItemAjax(id){
-    fetch("{% url 'main:decrement_item_ajax'%}", { 
-      method: "PATCH",
-      body : JSON.stringify({
-        id : id
-      })
-      }).then(refreshItems)
-  }
-
-  function incrementItemAjax(id){
-    fetch("{% url 'main:increment_item_ajax'%}", { 
-      method: "PATCH",
-      body : JSON.stringify({
-        id : id
-      })
-      }).then(refreshItems)
-  }
-
-
-  function deleteItemAjax(id){
-    fetch("{% url 'main:delete_item_ajax'%}", { 
-      method: "PATCH",
-      body : JSON.stringify({
-        id : id
-      })
-      }).then(refreshItems)
-  }
-
-  function editItemAjax(id){
-    location.href = "/edit-item/" + id
-  }
-
 </script>
 
 

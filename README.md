@@ -889,9 +889,9 @@ Pada dasarnya, pada Bootstrap semua definisi dan fungsionalitasi komponen telah 
 
 <h1> Tugas 6</h1>
 
-<h2>Implementasi Checklist<h2>
+<h2>Implementasi Checklist</h2>
 
-1. Tambah dua fungsi berikut pada ```views.py```.
+1. Tambah fungsi-fungsi berikut pada ```views.py```.
 
 ```
 def get_item_json(request):
@@ -912,49 +912,144 @@ def add_item_ajax(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+@login_required
+def increment_item_ajax(request):
+    if request.method == 'PATCH':
+        data = json.loads(request.body.decode('utf-8'))
+        item = Item.objects.get(pk=data.get("id"))
+        item.amount += 1
+        item.save()
+        return HttpResponse("OK", status=200)
+    return HttpResponseNotFound()
+
+@csrf_exempt
+@login_required
+def decrement_item_ajax(request):
+    if request.method == 'PATCH':
+        data = json.loads(request.body.decode('utf-8'))
+        item = Item.objects.get(pk=data.get("id"))
+        item.amount -= 1
+        item.save()
+        return HttpResponse("OK", status=200)
+    return HttpResponseNotFound()
+
+@csrf_exempt
+@login_required
+def delete_item_ajax(request):
+    if request.method == 'PATCH':
+        data = json.loads(request.body.decode('utf-8'))
+        item = Item.objects.get(pk=data.get("id"))
+        item.delete()
+        return HttpResponse("OK", status=200)
+    return HttpResponseNotFound()
 ```
+
 2. tambahkan path berikut pada ```urls.py```
 ```
 path('get-item/', get_item_json, name='get_item_json'),
 path('create-item-ajax/', add_item_ajax, name='add_item_ajax'),
+path('increment_item_ajax/', increment_item_ajax, name='increment_item_ajax'),
+path('decrement_item_ajax/', decrement_item_ajax, name='decrement_item_ajax'),
+path('delete-item-ajax/', delete_item_ajax, name='delete_item_ajax'),
 ```
 
 3. ada file ```main.html``` di folder ```main/templates```. Hapus bagian tabel dari tugas-tugas sebelumnya (pindahkan ke suatu file backup), lalu pada lokasi code yang baru dihapus tambahkan code berikut:
 ```
-<table id="item_table"></table>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
+<div id="item_cards"></div>
 ```
 
 4. Tambahkan code berikut pada bagian bawah file tepat di atas ```{% endblock content %}```:
 ```
 <script>
-    async function getProducts() {
-        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
-    }
-    async function refreshProducts() {
-        document.getElementById("product_table").innerHTML = ""
-        const products = await getProducts()
-        let htmlString = `<tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Date Added</th>
-        </tr>`
-        products.forEach((item) => {
-            htmlString += `\n<tr>
-            <td>${item.fields.name}</td>
-            <td>${item.fields.price}</td>
-            <td>${item.fields.description}</td>
-            <td>${item.fields.date_added}</td>
-        </tr>` 
-        })
-        
-        document.getElementById("product_table").innerHTML = htmlString
-    }
+  async function getItems() {
+      return fetch("{% url 'main:get_item_json' %}").then((res) => res.json())
+  }
+  async function refreshItems() {
+    document.getElementById("item_cards").innerHTML = ""
+    const items = await getItems()
+    let htmlString = `<div class="row row-cols-md-5">`
+      items.forEach((item) => {
+        htmlString += `\n
+		<div class="card" >
+			<div class="card-body">
+				<h5 class="card-title">${item.fields.name}</h5>
+				<h6 class="card-title" id="item_amount">${item.fields.amount}</h6>
+				<div class="container">
+					<span class="card-text d-inline-block text-truncate" style="max-width: 220px;">
+						${item.fields.description}
+					</span>
+			        <div>
+			          <button class="btn btn-primary btn-sm" onclick="decrementItemAjax(${item.pk})">-</button>
+			          <button class="btn btn-primary btn-sm" onclick="incrementItemAjax(${item.pk})">+</button>
+			          <button class="btn btn-primary btn-sm" onclick="deleteItemAjax(${item.pk})">Delete</button>
+			          <button class="btn btn-primary btn-sm" onclick="editItemAjax(${item.pk})">Edit</button>
+			          
+			        </div>
+        		</div>
+     		 </div>
+	</div>`
+  })
+  htmlString += `\n </div>`
 
-    refreshProducts()
+	
+    document.getElementById("item_cards").innerHTML = htmlString
+  }
+
+  refreshItems()
+
+  function addItem() {
+    fetch("{% url 'main:add_item_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#form'))
+    }).then(refreshItems)
+
+    document.getElementById("form").reset()
+    return false
+  }
+
+
+  document.getElementById("button_add").onclick = addItem
+
+
+  function decrementItemAjax(id){
+    fetch("{% url 'main:decrement_item_ajax'%}", { 
+      method: "PATCH",
+      body : JSON.stringify({
+        id : id
+      })
+      }).then(refreshItems)
+  }
+
+  function incrementItemAjax(id){
+    fetch("{% url 'main:increment_item_ajax'%}", { 
+      method: "PATCH",
+      body : JSON.stringify({
+        id : id
+      })
+      }).then(refreshItems)
+  }
+
+
+  function deleteItemAjax(id){
+    fetch("{% url 'main:delete_item_ajax'%}", { 
+      method: "PATCH",
+      body : JSON.stringify({
+        id : id
+      })
+      }).then(refreshItems)
+  }
+
+  function editItemAjax(id){
+    location.href = "/edit-item/" + id
+  }
+
 </script>
+
 ```
-5. Tepat di bawah code ```<table id="item_table"></table>``` yang barusan ditambahkan, tambahakan code berikut untuk membuat modal:
+5. Tepat di bawah code ```<div id="item_cards"></div>``` yang barusan ditambahkan, tambahakan code berikut untuk membuat modal:
 ```
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -990,23 +1085,12 @@ path('create-item-ajax/', add_item_ajax, name='add_item_ajax'),
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
 ```
-
-6. Pada block ```<Script>``` yang baru dibuat, tambahkan code berikut:
+6. Pada direktory ```pacil_inventory/pacil_inventory```, buka file ```settings.py```. Cari variable ```STATIC_URL```. Tepat di atasnya, tambahkan baris berikut:
 ```
-<script>
-  ...
-  function addItem() {
-    fetch("{% url 'main:add_item_ajax' %}", {
-      method: "POST",
-      body: new FormData(document.querySelector('#form'))
-    }).then(refreshItems)
-
-    document.getElementById("form").reset()
-    return false
-  }
-  document.getElementById("button_add").onclick = addItem
-</script>
+STATIC_ROOT = BASE_DIR / 'productionfiles'
+STATIC_URL = 'static/'
 ```
+Setelah itu, jalankan command ```python manage.py collectstatic```.
 
 <h2> Asynchronous Programming dan Synchronous Programming </h2>
 
@@ -1036,12 +1120,3 @@ Dapat diperhatikan bahwa request yang dimaksud di sini bukanlah request untuk lo
 
 <h2> Fetch API vs jQuery</h2> 
 Berdasarkan informasi yang saya dapatkan, Fetch API adalah teknologi yang lebih baru, dan merupakan penyempurnaan dari jQuery. Fetch API memiliki syntax yang lebih mudah serta performance yang lebih baik. Banyak aplikasi yang dikembangkan hari ini menggunakan Fetch API, sehingga membuatnya menjadi opsi yang lebih relevan untuk hari ini.
-
-
-
-
-
-
-
-
-

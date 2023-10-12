@@ -68,12 +68,14 @@
 <h5>Total Amount: {{total_amount}}</h5>
 <a href="{% url 'main:create_item' %}" class="btn btn-primary btn-sm m-3">Add New Item</a>
 
-
-
-<table id="item_cards"></table>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
+<div id="item_cards"></div>
 
 
 </div>
+
+
+
 
 
 
@@ -109,7 +111,7 @@
   </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Item by AJAX</button>
+
 
 
 <script>

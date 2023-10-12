@@ -20,7 +20,7 @@ urlpatterns = [
     path('edit-item/<int:id>', edit_item, name='edit_item'),
     path('get-item/', get_item_json, name='get_item_json'),
     path('create-item-ajax/', add_item_ajax, name='add_item_ajax'),
-    path('increment/', increment_item_ajax, name='increment_item_ajax'),
-    path('decrement/', decrement_item_ajax, name='decrement_item_ajax'),
+    path('increment_item_ajax/', increment_item_ajax, name='increment_item_ajax'),
+    path('decrement_item_ajax/', decrement_item_ajax, name='decrement_item_ajax'),
     path('delete-item-ajax/', delete_item_ajax, name='delete_item_ajax'),
 ]
